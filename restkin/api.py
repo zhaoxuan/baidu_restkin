@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import json
+import pdb
 
 from twisted.web import http
 from twisted.python import log
@@ -68,19 +69,22 @@ class RootResource(Resource):
 
 class VersionResource(Resource):
     def getChild(self, path, request):
-        return TenantResource(path)
-
-
-class TenantResource(Resource):
-    def __init__(self, tenant_id):
-        Resource.__init__(self)
-        self._tenant_id = tenant_id
-
-    def getChild(self, path, request):
         if path == 'trace':
             return TraceResource()
 
         return NoResource()
+
+
+# class TenantResource(Resource):
+#     def __init__(self, tenant_id):
+#         Resource.__init__(self)
+#         self._tenant_id = tenant_id
+
+#     def getChild(self, path, request):
+#         if path == 'trace':
+#             return TraceResource()
+
+#         return NoResource()
 
 
 class TraceResource(Resource):

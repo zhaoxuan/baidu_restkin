@@ -33,7 +33,7 @@ class Options(BaseOptions):
     optParameters = [
         ["port", "p", "tcp:6956",
          "Port to listen on for RESTkin HTTP API requests"],
-        ["scribe", None, "tcp:localhost:1463",
+        ["scribe", None, "tcp:localhost:9410",
          "endpoint string description for where to connect to scribe"]]
 
     optFlags = [["rproxy", "r", "Use node-rproxy for authentication."]]
@@ -42,10 +42,17 @@ class Options(BaseOptions):
 def makeService(config):
     s = MultiService()
 
+
+    # ZipkinTracer(
+    #     scribe_client,
+    #     category=None,
+    #     end_annotations=None,
+    #     max_traces=50,
+    #     max_idle_time=10,
+    #     _reactor=None)
     push_tracer(
         ZipkinTracer(
-            ScribeClient(
-                clientFromString(reactor, config['scribe']))))
+            ScribeClient(clientFromString(reactor, config['scribe'])), 'zipkin', None, 0, 10, None))
 
     root = RootResource()
 
